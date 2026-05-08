@@ -136,10 +136,10 @@ export default function Dashboard() {
         <div className="card-title">Scoring guide</div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '8px', marginTop: '1rem' }}>
           {[
-            ['Run scored', '+1 pt'],['Fifty (50+)', '+8 pts'],['Century (100+)', '+16 pts'],
-            ['Wicket taken', '+25 pts'],['5-wicket haul', '+20 pts bonus'],['Maiden over', '+12 pts'],
-            ['Catch', '+8 pts'],['Stumping', '+12 pts'],['Run out', '+8 pts'],
-            ['Duck (0)', '-4 pts'],['Appearance', '+4 pts'],['Captain', '2× points'],
+            ['Run scored', '+1 pt'],['Fifty (50+)', '+10 pts'],['Century (100+)', '+20 pts'],
+            ['Wicket taken', '+20 pts'],['5-wicket haul', '+25 pts bonus'],['Maiden over', '+5 pts'],
+            ['Catch', '+6 pts'],['Stumping', '+6 pts'],['Run out', '+6 pts'],
+            ['Duck (0)', '-5 pts'],['Appearance', '+2 pts'],['Captain', '2× points'],,
           ].map(([action, pts]) => (
             <div key={action} style={{ display: 'flex', justifyContent: 'space-between', padding: '7px 12px', background: 'var(--cream)', borderRadius: '6px', fontSize: 13 }}>
               <span style={{ color: 'var(--text-muted)' }}>{action}</span>
