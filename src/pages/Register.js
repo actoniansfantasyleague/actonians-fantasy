@@ -16,18 +16,28 @@ export default function Register() {
     if (form.password.length < 6) { setError('Password must be at least 6 characters'); return }
     setLoading(true)
 
-    const { data, error } = await supabase.auth.signUp({
+    const { data, error: signUpError } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
       options: { data: { display_name: form.displayName } }
     })
 
-    if (error) { setError(error.message); setLoading(false); return }
+    if (signUpError) { setError(signUpError.message); setLoading(false); return }
 
     if (data.user) {
-      // Update profile with team name
-      await supabase.from('profiles').update({ team_name: form.teamName, display_name: form.displayName })
-        .eq('id', data.user.id)
+      const { error: profileError } = await supabase.from('profiles').upsert({
+        id: data.user.id,
+        display_name: form.displayName,
+        team_name: form.teamName,
+        total_points: 0
+      })
+
+      if (profileError) {
+        setError('Account created but profile failed: ' + profileError.message)
+        setLoading(false)
+        return
+      }
+
       navigate('/')
     }
   }
@@ -46,11 +56,11 @@ export default function Register() {
         <form onSubmit={handleRegister}>
           <div className="form-group">
             <label className="form-label">Your name</label>
-            <input type="text" className="form-input" value={form.displayName} onChange={set('displayName')} placeholder="e.g. James Smith" required />
+            <input type="text" className="form-input" value={form.displayName} onChange={set('displayName')} placeholder="e.g. Chanakya Shah" required />
           </div>
           <div className="form-group">
             <label className="form-label">Team name</label>
-            <input type="text" className="form-input" value={form.teamName} onChange={set('teamName')} placeholder="e.g. The Golden Ducks" required />
+            <input type="text" className="form-input" value={form.teamName} onChange={set('teamName')} placeholder="e.g. BeersAndBoundaries" required />
           </div>
           <div className="form-group">
             <label className="form-label">Email address</label>
